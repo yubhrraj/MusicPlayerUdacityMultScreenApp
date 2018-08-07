@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private SeekBar seek;
     private Button play, pause;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,12 +26,12 @@ public class MainActivity extends AppCompatActivity {
 
         play = (Button) findViewById(R.id.play);
         pause = (Button) findViewById(R.id.pause);
-        seek = (SeekBar)  findViewById(R.id.seekBar);
+        seek = (SeekBar) findViewById(R.id.seekBar);
         handler = new Handler();
 
-        music = MediaPlayer.create(this, R.raw.gnr_sweet);
+        music = MediaPlayer.create(this, R.raw.drake_in_my_feelings);
+
         seek.setMax(music.getDuration());
-        playCycle();
 
 
         play.setOnClickListener(new View.OnClickListener() {
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 music.start();
+                playCycle();
                 music.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mediaPlayer) {
@@ -48,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean userinput) {
-                music.seekTo(progress);
-                seek.setProgress(progress);
+                if (userinput){
+                    music.seekTo(progress);
+                }
 
             }
 
@@ -90,13 +92,5 @@ public class MainActivity extends AppCompatActivity {
             };
             handler.postDelayed(mrunnable, 1000);
         }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        music.stop();
-        music.release();
-        music=null;
     }
 }
